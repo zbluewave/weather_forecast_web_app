@@ -5,15 +5,18 @@ import WeatherCard from "./weatherCard";
 import {
     fetchWeatherAndForecast, WeatherAndForecastData, WeatherRequestError
 } from "@/lib/weatherApi/fetchWeatherForecast";
+import {useWeatherSearchContext} from "@/context/weatherSearchContext";
 
 interface CurrentWeatherProps {
     locationQuery: string;
 }
 
 export const CurrentWeather = (props: CurrentWeatherProps) => {
-    const {isLoading, isSuccess, data} = useQuery<WeatherAndForecastData>({
-        queryKey: ["searchCurrentWeather", props.locationQuery],
-        queryFn:() => fetchWeatherAndForecast(props.locationQuery),
+    const { query } = useWeatherSearchContext();
+
+    const {isLoading, data} = useQuery<WeatherAndForecastData>({
+        queryKey: ["searchCurrentWeather", query],
+        queryFn:() => fetchWeatherAndForecast(query),
     });
 
     if (isLoading) {

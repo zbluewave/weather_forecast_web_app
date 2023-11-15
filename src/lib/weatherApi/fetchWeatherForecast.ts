@@ -17,7 +17,6 @@ const parseInput = (query: string) => {
   return query;
 }
 
-
 const responseToLocation = (resp: any): Location => {
   return {
     cityName: resp.city_name,
@@ -63,7 +62,7 @@ export interface WeatherRequestError {
 }
 
 export const fetchWeatherAndForecast = async (query: string): Promise<WeatherAndForecastData> => {
-  let resp = await fetchDaily(parseInput(query));
+  let resp;
   if (false) {
     resp = await fetchDaily(parseInput(query));
   } else {
