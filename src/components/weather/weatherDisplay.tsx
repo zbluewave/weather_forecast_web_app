@@ -6,12 +6,13 @@ import {
     fetchWeatherAndForecast, WeatherAndForecastData, WeatherRequestError
 } from "@/lib/weatherApi/fetchWeatherForecast";
 import {useWeatherSearchContext} from "@/context/weatherSearchContext";
+import WeatherForecastCard from "@/components/weather/weatherForecastCard";
 
 interface CurrentWeatherProps {
-    locationQuery: string;
+
 }
 
-export const CurrentWeather = (props: CurrentWeatherProps) => {
+export const WeatherDisplay = (props: CurrentWeatherProps) => {
     const { query } = useWeatherSearchContext();
 
     const {isLoading, data} = useQuery<WeatherAndForecastData>({
@@ -28,10 +29,12 @@ export const CurrentWeather = (props: CurrentWeatherProps) => {
     }
 
     return (
-        <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:block">
-            <WeatherCard {...data.currentWeatherData} />
+        <div className="flex flex-col items-center justify-center w-screen">
+            <WeatherCard currentWeather={data.currentWeatherData} location={data.location} />
+            <WeatherForecastCard forecasts={data.forecasts} />
         </div>
+
     );
 }
 
-export default CurrentWeather;
+export default WeatherDisplay;

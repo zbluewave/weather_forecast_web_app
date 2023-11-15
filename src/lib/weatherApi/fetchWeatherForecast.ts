@@ -41,7 +41,7 @@ const responseToForecastData = (resp: any): DayWeatherForecastData[] => {
   const data = resp.data;
   return data.map((d: any) => {
     return {
-      date: d.datetime,
+      date: new Date(d.ts * 1000),
       minTemperature: d.min_temp,
       maxTemperature: d.max_temp,
       weatherDescription: d.weather.description,
@@ -53,7 +53,7 @@ export interface WeatherAndForecastData {
   success: boolean;
   currentWeatherData: CurrentWeatherData;
   location: Location;
-  forecastData?: DayWeatherForecastData[];
+  forecasts: DayWeatherForecastData[];
 }
 
 export interface WeatherRequestError {
@@ -73,7 +73,7 @@ export const fetchWeatherAndForecast = async (query: string): Promise<WeatherAnd
     success: true,
     currentWeatherData: responseToWeatherData(resp),
     location: responseToLocation(resp),
-    forecastData: responseToForecastData(resp),
+    forecasts: responseToForecastData(resp),
   }
 };
 
