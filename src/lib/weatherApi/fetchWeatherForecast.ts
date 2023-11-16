@@ -38,7 +38,7 @@ const responseToWeatherData = (resp: any): CurrentWeatherData => {
         temperature: c.temp,
         humidity: c.rh,
         windSpeed: c.wind_spd,
-        windDirection: c.wind_cdir_full,
+        windDirection: c.wind_cdir,
         weatherDescription: c.weather.description,
         weatherIconUrl: `https://cdn.weatherbit.io/static/img/icons/${c.weather.icon}.png`, //TODO: move to icon to to SVG or CSS
     }
