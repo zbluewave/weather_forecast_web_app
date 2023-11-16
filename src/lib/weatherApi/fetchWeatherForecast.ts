@@ -1,6 +1,7 @@
-import { CurrentWeatherData, Location, DayWeatherForecastData } from "@/interfaces/weather";
+import { CurrentWeatherData, DayWeatherForecastData } from "@/interfaces/weather";
+import { Location } from "@/interfaces/location";
 import { SUCCESS_RESPONSE } from './mockWetherBitForecastApiResponse';
-import {Unit} from "@/interfaces/unit";
+import { Unit } from "@/interfaces/unit";
 
 //TODO: move to env
 const USE_MOCK_DATA = false;
