@@ -33,8 +33,9 @@ Note: This step is optional as sample API key is provided in `.env` file which w
 
 ## Further Considerations for development
 
-| Prioritization | Task Description                                                      |
-|----------------|-----------------------------------------------------------------------|
-| 1              | Create Sever API to call 3rd party API to avoid expose API KEY        |
+| Prioritization | Task Description                                                  |
+|----------------|-------------------------------------------------------------------|
+| 1              | Create Sever API to call 3rd party API to avoid expose API KEY    |
 | 2              | Create docker file to enable running application through docker image |
-| 3              | Introduce 3rd party state management tool such as redux               |
+| 3              | Introduce 3rd party state management tool such as redux           |
+| 4              | Setup unit test and mock server                                   |
