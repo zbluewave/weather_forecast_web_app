@@ -13,7 +13,7 @@ const fetchDaily = async (query: string, unit: Unit) => {
 
   return {
     ok: res.status === 200,
-    data: res.json(),
+    data: res,
   }
 };
 
@@ -88,7 +88,7 @@ export const fetchWeatherAndForecast = async (query: string, unit: Unit): Promis
         err_msg: 'Error fetching weather data, please provide a valid location. If you are using coordinates, please separate latitude and longitude with a comma.'
       };
     } else {
-      data = await apiResp.data;
+      data = await apiResp.data.json();
     }
   }
 
