@@ -2,10 +2,11 @@ import { CurrentWeatherData, Location, DayWeatherForecastData } from "@/interfac
 import { SUCCESS_RESPONSE } from './mockWetherBitForecastApiResponse';
 import {Unit} from "@/interfaces/unit";
 
-const API_TOKEN = '04a0a412c18c4a62aa163c10b52fe8c0';
+const USE_MOCK_DATA = process.env.USE_MOCK_DATA
+const API_TOKEN = process.env.WEATHER_BIT_API_KEY;
 const fetchDaily = async (query: string, unit: Unit) => {
   const unitParam = unit === 'metric' ? 'M' : 'I';
-  const res = await fetch(`https://api.weatherbit.io/v2.0/forecast/daily?key=${API_TOKEN}&city=${query}&days=6&units=${unitParam}`);
+  const res = await fetch(`https://api.weatherbit.io/v2.0/forecast/daily?key=${API_TOKEN}&${queryToApiQuery(query)}&days=6&units=${unitParam}`);
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error('Failed to fetch data')
@@ -14,8 +15,13 @@ const fetchDaily = async (query: string, unit: Unit) => {
   return res.json()
 };
 
-const parseInput = (query: string) => {
-  return query;
+const queryToApiQuery = (query: string) => {
+  const queryParts = query.split(',');
+  if (queryParts.length === 2 && !isNaN(parseFloat(queryParts[0])) && !isNaN(parseFloat(queryParts[1]))) {
+    return `lat=${queryParts[0]}&lon=${queryParts[1]}`;
+  }
+
+  return `city=${query}`;
 }
 
 const responseToLocation = (resp: any): Location => {
@@ -24,7 +30,6 @@ const responseToLocation = (resp: any): Location => {
     countryCode: resp.country_code,
     stateCode: resp.state_code,
   }
-
 }
 const responseToWeatherData = (resp: any): CurrentWeatherData => {
   const c = resp.data[0];
@@ -40,7 +45,7 @@ const responseToWeatherData = (resp: any): CurrentWeatherData => {
 
 const responseToForecastData = (resp: any): DayWeatherForecastData[] => {
   const data = resp.data;
-  return data.slice(1).map((d: any) => {
+  return data.slice(1, 6).map((d: any) => {
     return {
       date: new Date(d.ts * 1000),
       minTemperature: d.min_temp,
@@ -64,10 +69,10 @@ export interface WeatherRequestError {
 
 export const fetchWeatherAndForecast = async (query: string, unit: Unit): Promise<WeatherAndForecastData> => {
   let resp;
-  if (false) {
-    resp = await fetchDaily(parseInput(query), unit);
-  } else {
+  if (USE_MOCK_DATA) {
     resp = SUCCESS_RESPONSE;
+  } else {
+    resp = await fetchDaily(query, unit);
   }
 
   return {

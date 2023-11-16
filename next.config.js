@@ -8,6 +8,10 @@ const nextConfig = {
             },
         ],
     },
+    env: {
+        WEATHER_BIT_API_KEY: process.env.NEXT_PUBLIC_WEATHER_BIT_API_KEY,
+        USE_MOCK_DATA: process.env.USE_MOCK_DATA,
+    }
 }
 
 module.exports = nextConfig

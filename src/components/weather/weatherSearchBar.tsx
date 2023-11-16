@@ -15,11 +15,12 @@ export const WeatherSearchBar = () => {
   return (
       <form className="flex flex-col md:flex-row gap-3" onSubmit={handleSubmit}>
           <div className="flex">
-              <input type="text" placeholder="Search by Location Name or (Latitude, Longitude)"
+              <input type="text" placeholder="Search by Location Name or Latitude and Longitude"
                      className="w-full md:w-80 px-3 h-10 rounded-l focus:outline-none focus:border-sky-500"
               />
-                  <button type="submit" className="bg-sky-500 text-white rounded-r px-2 md:px-3 py-0 md:py-1">Search
-                  </button>
+              <button type="submit" className="bg-sky-500 text-white rounded-r px-2 md:px-3 py-0 md:py-1">
+                  Search
+              </button>
           </div>
       </form>
   );
