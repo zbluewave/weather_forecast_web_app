@@ -15,12 +15,11 @@ interface CurrentWeatherProps {
 
 export const WeatherDisplay = (props: CurrentWeatherProps) => {
     const { query } = useWeatherSearchContext();
+    const { unit } = useUnitContext();
     const {isLoading, data} = useQuery<WeatherAndForecastData>({
         queryKey: ["searchCurrentWeather", query],
-        queryFn:() => fetchWeatherAndForecast(query),
+        queryFn:() => fetchWeatherAndForecast(query, unit),
     });
-
-    const { unit } = useUnitContext();
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -31,7 +30,7 @@ export const WeatherDisplay = (props: CurrentWeatherProps) => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center w-screen">
+        <div className="flex flex-col items-center justify-center">
             <WeatherCard currentWeather={data.currentWeatherData} location={data.location} unit={unit} />
             <WeatherForecastCard forecasts={data.forecasts} unit={unit} />
         </div>

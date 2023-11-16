@@ -1,9 +1,11 @@
 import { CurrentWeatherData, Location, DayWeatherForecastData } from "@/interfaces/weather";
 import { SUCCESS_RESPONSE } from './mockWetherBitForecastApiResponse';
+import {Unit} from "@/interfaces/unit";
 
 const API_TOKEN = '04a0a412c18c4a62aa163c10b52fe8c0';
-const fetchDaily = async (query: string) => {
-  const res = await fetch(`https://api.weatherbit.io/v2.0/forecast/daily?key=${API_TOKEN}&city=${query}&days=6`);
+const fetchDaily = async (query: string, unit: Unit) => {
+  const unitParam = unit === 'metric' ? 'M' : 'I';
+  const res = await fetch(`https://api.weatherbit.io/v2.0/forecast/daily?key=${API_TOKEN}&city=${query}&days=6&units=${unitParam}`);
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error('Failed to fetch data')
@@ -60,10 +62,10 @@ export interface WeatherRequestError {
   err_msg: string;
 }
 
-export const fetchWeatherAndForecast = async (query: string): Promise<WeatherAndForecastData> => {
+export const fetchWeatherAndForecast = async (query: string, unit: Unit): Promise<WeatherAndForecastData> => {
   let resp;
   if (false) {
-    resp = await fetchDaily(parseInput(query));
+    resp = await fetchDaily(parseInput(query), unit);
   } else {
     resp = SUCCESS_RESPONSE;
   }
