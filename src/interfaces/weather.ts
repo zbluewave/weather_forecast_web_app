@@ -1,9 +1,3 @@
-export interface Location {
-    cityName: string;
-    countryCode: string;
-    stateCode: string;
-}
-
 export interface CurrentWeatherData {
     temperature: number;
     humidity: number;

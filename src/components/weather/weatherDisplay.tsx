@@ -5,9 +5,9 @@ import WeatherCard from "./weatherCard";
 import {
     fetchWeatherAndForecast, WeatherAndForecastSuccessResponse, WeatherAndForecastErrorResponse
 } from "@/lib/weatherApi/fetchWeatherForecast";
-import {useWeatherSearchContext} from "@/context/weatherSearchContext";
+import { useWeatherSearchContext } from "@/context/weatherSearchContext";
 import WeatherForecastCard from "@/components/weather/weatherForecastCard";
-import {useUnitContext} from "@/context/unitContext";
+import { useUnitContext } from "@/context/unitContext";
 
 const Message = (props: {msg: string}) => {
     return (
@@ -18,7 +18,6 @@ const Message = (props: {msg: string}) => {
         </div>
     );
 }
-
 
 export const WeatherDisplay = () => {
     const { query } = useWeatherSearchContext();
@@ -33,6 +32,10 @@ export const WeatherDisplay = () => {
         refetchOnMount: false,
         refetchOnReconnect: false,
     });
+
+    if (!query) {
+        return (<Message  msg={"Search for a location to get started"}/>);
+    }
 
     if (isLoading) {
         return (<Message  msg={"Loading"}/>)
@@ -51,7 +54,6 @@ export const WeatherDisplay = () => {
             <WeatherCard currentWeather={(data as WeatherAndForecastSuccessResponse).currentWeatherData} location={(data as WeatherAndForecastSuccessResponse).location} unit={unit} />
             <WeatherForecastCard forecasts={(data as WeatherAndForecastSuccessResponse).forecasts} unit={unit} />
         </div>
-
     );
 }
 

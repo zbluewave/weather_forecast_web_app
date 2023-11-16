@@ -1,8 +1,9 @@
 'use client'
 import Image from 'next/image'
-import { CurrentWeatherData, Location } from "@/interfaces/weather";
-import {Unit} from "@/interfaces/unit";
-import {formatHumidity, formatTemperature, formatWindSpeed} from "@/lib/unit/unitUtil";
+import { CurrentWeatherData } from "@/interfaces/weather";
+import { Location } from "@/interfaces/location";
+import { Unit } from "@/interfaces/unit";
+import { formatHumidity, formatTemperature, formatWindSpeed } from "@/lib/unit/unitUtil";
 
 interface WeatherCardProps {
     currentWeather: CurrentWeatherData;
