@@ -1,4 +1,3 @@
-//TODO can refactor this to support multiple weather apis
 import { CurrentWeatherData, Location, DayWeatherForecastData } from "@/interfaces/weather";
 import { SUCCESS_RESPONSE } from './mockWetherBitForecastApiResponse';
 
@@ -39,7 +38,7 @@ const responseToWeatherData = (resp: any): CurrentWeatherData => {
 
 const responseToForecastData = (resp: any): DayWeatherForecastData[] => {
   const data = resp.data;
-  return data.map((d: any) => {
+  return data.slice(1).map((d: any) => {
     return {
       date: new Date(d.ts * 1000),
       minTemperature: d.min_temp,

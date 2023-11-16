@@ -1,20 +1,23 @@
 'use client'
 import { CurrentWeatherData, Location } from "@/interfaces/weather";
+import {Unit} from "@/interfaces/unit";
+import {formatHumidity, formatTemperature, formatWindSpeed} from "@/lib/unit/unitUtil";
 
 interface WeatherCardProps {
     currentWeather: CurrentWeatherData;
     location: Location;
+    unit: Unit;
 }
 
 export const WeatherCard = (props: WeatherCardProps) => {
-    const { currentWeather, location } = props;
+    const { currentWeather, location, unit } = props;
 
     return (
         <div className="w-full max-w-screen-sm bg-white p-10 rounded-xl ring-8 ring-white ring-opacity-40">
             <div className="flex justify-between">
                 <div className="flex flex-col">
                     <span className="font-semibold mb-2 text-gray-500">{location.cityName}, {location.stateCode}, {location.countryCode}</span>
-                    <span className="text-6xl font-bold">{currentWeather.temperature}°C</span>
+                    <span className="text-6xl font-bold">{formatTemperature(currentWeather.temperature, unit)}</span>
                     <span className="text-2xl mt-2">{currentWeather.weatherDescription}</span>
                 </div>
                 <svg className="h-24 w-24 fill-current text-yellow-400" xmlns="http://www.w3.org/2000/svg" height="24"
@@ -42,7 +45,7 @@ export const WeatherCard = (props: WeatherCardProps) => {
                             </g>
                         </g>
                     </svg>
-                    {currentWeather.humidity} l/m<sup>2</sup>
+                    {formatHumidity(currentWeather.humidity)}
                 </div>
                 <div className="flex items-center text-gray-700 px-2">
                     <svg className="mr-2 h-4 w-4" viewBox="0 0 12 21" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -73,7 +76,7 @@ export const WeatherCard = (props: WeatherCardProps) => {
                             </g>
                         </g>
                     </svg>
-                    {currentWeather.windSpeed} km/h
+                    {formatWindSpeed(currentWeather.windSpeed, unit)}
                 </div>
             </div>
         </div>
