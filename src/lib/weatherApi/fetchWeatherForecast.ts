@@ -6,17 +6,14 @@ import {Unit} from "@/interfaces/unit";
 const USE_MOCK_DATA = false;
 const API_TOKEN = process.env.WEATHER_BIT_API_KEY;
 
-console.log('USE_MOCK_DATA', USE_MOCK_DATA);
 const fetchDaily = async (query: string, unit: Unit) => {
   const unitParam = unit === 'metric' ? 'M' : 'I';
-  console.log('unitParam', unitParam);
   const res = await fetch(`https://api.weatherbit.io/v2.0/forecast/daily?key=${API_TOKEN}&${queryToApiQuery(query)}&days=6&units=${unitParam}`);
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error('Failed to fetch data')
-  }
 
-  return res.json()
+  return {
+    ok: res.status === 200,
+    data: res.json(),
+  }
 };
 
 const queryToApiQuery = (query: string) => {
@@ -59,31 +56,46 @@ const responseToForecastData = (resp: any): DayWeatherForecastData[] => {
   })
 }
 
-export interface WeatherAndForecastData {
+export interface WeatherAndForecastSuccessResponse {
   success: boolean;
   currentWeatherData: CurrentWeatherData;
   location: Location;
   forecasts: DayWeatherForecastData[];
 }
 
-export interface WeatherRequestError {
+export interface WeatherAndForecastErrorResponse {
   success: boolean;
   err_msg: string;
 }
 
-export const fetchWeatherAndForecast = async (query: string, unit: Unit): Promise<WeatherAndForecastData> => {
-  let resp;
+export const fetchWeatherAndForecast = async (query: string, unit: Unit): Promise<WeatherAndForecastSuccessResponse|WeatherAndForecastErrorResponse> => {
+  if (!query) {
+    return {
+      success: false,
+      err_msg: 'Please provide a location or coordinate to get Started'
+    };
+  }
+
+  let data;
   if (USE_MOCK_DATA) {
-    resp = SUCCESS_RESPONSE;
+    data = SUCCESS_RESPONSE;
   } else {
-    resp = await fetchDaily(query, unit);
+    const apiResp = await fetchDaily(query, unit);
+    if (!apiResp.ok) {
+      return {
+        success: false,
+        err_msg: 'Error fetching weather data, please provide a valid location'
+      };
+    } else {
+      data = await apiResp.data;
+    }
   }
 
   return {
     success: true,
-    currentWeatherData: responseToWeatherData(resp),
-    location: responseToLocation(resp),
-    forecasts: responseToForecastData(resp),
+    currentWeatherData: responseToWeatherData(data),
+    location: responseToLocation(data),
+    forecasts: responseToForecastData(data),
   }
 };
 
