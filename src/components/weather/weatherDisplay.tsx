@@ -34,7 +34,7 @@ export const WeatherDisplay = () => {
     });
 
     if (!query) {
-        return (<Message  msg={"Search for a location to get started"}/>);
+        return (<Message  msg={"Please provide a location or coordinate to get Started. Please separate latitude and longitude with a comma."}/>);
     }
 
     if (isLoading) {
@@ -42,7 +42,7 @@ export const WeatherDisplay = () => {
     }
 
     if (!data) {
-        return (<Message  msg={"Search for a location to get started"}/>);
+        return (<Message  msg={"Please provide a location or coordinate to get Started. Please separate latitude and longitude with a comma."}/>);
     }
 
     if (!data.success) {

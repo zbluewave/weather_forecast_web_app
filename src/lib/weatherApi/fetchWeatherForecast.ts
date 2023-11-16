@@ -73,7 +73,7 @@ export const fetchWeatherAndForecast = async (query: string, unit: Unit): Promis
   if (!query) {
     return {
       success: false,
-      err_msg: 'Please provide a location or coordinate to get Started'
+      err_msg: 'Please provide a location or coordinate to get Started. Please separate latitude and longitude with a comma.'
     };
   }
 
@@ -85,7 +85,7 @@ export const fetchWeatherAndForecast = async (query: string, unit: Unit): Promis
     if (!apiResp.ok) {
       return {
         success: false,
-        err_msg: 'Error fetching weather data, please provide a valid location'
+        err_msg: 'Error fetching weather data, please provide a valid location. If you are using coordinates, please separate latitude and longitude with a comma.'
       };
     } else {
       data = await apiResp.data;
