@@ -2,10 +2,14 @@ import { CurrentWeatherData, Location, DayWeatherForecastData } from "@/interfac
 import { SUCCESS_RESPONSE } from './mockWetherBitForecastApiResponse';
 import {Unit} from "@/interfaces/unit";
 
-const USE_MOCK_DATA = process.env.USE_MOCK_DATA
+//TODO: move to env
+const USE_MOCK_DATA = false;
 const API_TOKEN = process.env.WEATHER_BIT_API_KEY;
+
+console.log('USE_MOCK_DATA', USE_MOCK_DATA);
 const fetchDaily = async (query: string, unit: Unit) => {
   const unitParam = unit === 'metric' ? 'M' : 'I';
+  console.log('unitParam', unitParam);
   const res = await fetch(`https://api.weatherbit.io/v2.0/forecast/daily?key=${API_TOKEN}&${queryToApiQuery(query)}&days=6&units=${unitParam}`);
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
@@ -39,7 +43,7 @@ const responseToWeatherData = (resp: any): CurrentWeatherData => {
         windSpeed: c.wind_spd,
         windDirection: c.wind_cdir_full,
         weatherDescription: c.weather.description,
-        weatherIconUrl: c.weather.icon,
+        weatherIconUrl: `https://cdn.weatherbit.io/static/img/icons/${c.weather.icon}.png`, //TODO: move to icon to to SVG or CSS
     }
 }
 

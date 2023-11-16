@@ -16,13 +16,30 @@ interface CurrentWeatherProps {
 export const WeatherDisplay = (props: CurrentWeatherProps) => {
     const { query } = useWeatherSearchContext();
     const { unit } = useUnitContext();
+
     const {isLoading, data} = useQuery<WeatherAndForecastData>({
-        queryKey: ["searchCurrentWeather", query],
+        queryKey: ["searchCurrentWeather", query, unit],
         queryFn:() => fetchWeatherAndForecast(query, unit),
     });
 
+    if (!query) {
+        return (
+            <div className="flex flex-col items-center justify-center">
+                <div className="w-full max-w-screen-sm bg-white p-10 rounded-xl ring-8 ring-white ring-opacity-40">
+                    Search for a location
+                </div>
+            </div>
+        );
+    }
+
     if (isLoading) {
-        return <div>Loading...</div>;
+        return (
+            <div className="flex flex-col items-center justify-center">
+                <div className="w-full max-w-screen-sm bg-white p-10 rounded-xl ring-8 ring-white ring-opacity-40">
+                    Loading...
+                </div>
+            </div>
+        );
     }
 
     if (!data) {
